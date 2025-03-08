@@ -80,8 +80,9 @@ public class Match {
                 s = m.apply(s);
             } catch (Exception ignored) {}
         }
-        if(cs.toString().isEmpty()){
-            return pinInContains(s,cs.toString());
+        if (cs.toString()
+            .isEmpty()) {
+            return pinInContains(s, cs.toString());
         }
         if (inputCache != null && inputCache.left.equals(cs.toString())) {
             return match(s, inputCache.right);
@@ -116,8 +117,8 @@ public class Match {
             .map(s -> pinInContains(name, s))
             .filter(x -> !x)
             .findAny();
-        if(result.isPresent()){
-            return  false;
+        if (result.isPresent()) {
+            return false;
         }
         return true;
     }
