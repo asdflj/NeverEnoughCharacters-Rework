@@ -1,0 +1,13 @@
+nei.options.nech=拼音搜索-Rework
+
+nei.options.nech.ignore_comma=匹配时忽略逗号
+nei.options.nech.ignore_comma.true=是
+nei.options.nech.ignore_comma.false=否
+
+nei.options.nech.parentheses=匹配时忽略括号
+nei.options.nech.parentheses.true=是
+nei.options.nech.parentheses.false=否
+
+nei.options.nech.contain_with_voltage=匹配时分隔电压
+nei.options.nech.contain_with_voltage.true=是
+nei.options.nech.contain_with_voltage.false=否
