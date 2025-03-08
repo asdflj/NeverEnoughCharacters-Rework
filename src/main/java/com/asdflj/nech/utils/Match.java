@@ -34,18 +34,18 @@ public class Match {
         .commit();
     private static final Pattern p = Pattern.compile("a");
     private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
-    public static final List<Function<String, String>> itemNameMiddleware = new LinkedList<>();
+    public static final List<Function<String, String>> textMiddleware = new LinkedList<>();
     public static final List<Function<String, List<String>>> inputMiddleware = new LinkedList<>();
     private static final String voltagePatternString = Voltage.getPatternString();
     private static ImmutablePair<String, List<String>> inputCache = null;
     static {
-        itemNameMiddleware.add(s -> {
+        textMiddleware.add(s -> {
             if (getConfigValue(ButtonConstants.COMMA)) {
                 return s.replaceAll(",", "");
             }
             return s;
         });
-        itemNameMiddleware.add(s -> {
+        textMiddleware.add(s -> {
             if (getConfigValue(ButtonConstants.PARENTHESES)) {
                 return s.replaceAll("[()]", "");
             }
@@ -75,7 +75,7 @@ public class Match {
     }
 
     public static boolean contains(String s, CharSequence cs) {
-        for (Function<String, String> m : itemNameMiddleware) {
+        for (Function<String, String> m : textMiddleware) {
             try {
                 s = m.apply(s);
             } catch (Exception ignored) {}
