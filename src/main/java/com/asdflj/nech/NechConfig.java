@@ -135,7 +135,10 @@ public class NechConfig {
             "com.glodblock.github.client.gui.GuiLevelTerminal:itemStackMatchesSearchTerm",
             "appeng.client.gui.implementations.GuiInterfaceTerminal$InterfaceTerminalList:update",
             "appeng.client.gui.implementations.GuiInterfaceTerminal:itemStackMatchesSearchTerm",
-            "com.glodblock.github.client.gui.GuiInterfaceWireless$InterfaceWirelessList:update" };
+            "com.glodblock.github.client.gui.GuiInterfaceWireless$InterfaceWirelessList:update",
+            "appeng.client.gui.implementations.GuiCraftConfirm:updateSearchGoToList",
+            "appeng.client.gui.implementations.GuiCraftingCPU:updateSearchGoToList",
+            "appeng.client.gui.widgets.GuiCraftingTree:updateSearchGoToList" };
     }
 
     public static enum Spell {
