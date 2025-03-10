@@ -11,3 +11,11 @@ nei.options.nech.parentheses.false=否
 nei.options.nech.contain_with_voltage=匹配时分隔电压
 nei.options.nech.contain_with_voltage.true=是
 nei.options.nech.contain_with_voltage.false=否
+
+nei.options.nech.lua_script=允许运行自定义lua脚本
+nei.options.nech.lua_script.true=是
+nei.options.nech.lua_script.false=否
+
+nech.message.lua_script.reload=重新加载lua脚本
+nech.message.lua_script.done=加载结束
+nech.message.lua_script.invalid_file=无效lua脚本%s

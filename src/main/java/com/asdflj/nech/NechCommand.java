@@ -11,6 +11,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 
+import com.asdflj.nech.proxy.ClientProxy;
+import com.asdflj.nech.utils.LuaPlugin;
 import com.asdflj.nech.utils.Profiler;
 import com.google.gson.GsonBuilder;
 
@@ -28,7 +30,11 @@ public class NechCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if (args.length == 1 && "profile".equals(args[0])) {
+        if (args.length == 1 && "reload".equals(args[0])) {
+            ClientProxy.sendToPlayer("nech.message.lua_script.reload");
+            LuaPlugin.reloadLuaScript();
+            ClientProxy.sendToPlayer("nech.message.lua_script.done");
+        } else if (args.length == 1 && "profile".equals(args[0])) {
             Thread t = new Thread(() -> {
                 sender.addChatMessage(new ChatComponentText(I18n.format("chat.start")));
                 Profiler.Report r = Profiler.run();
@@ -120,7 +126,7 @@ public class NechCommand extends CommandBase {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, "profile", "verbose", "keyboard");
+            return getListOfStringsMatchingLastWord(args, "profile", "verbose", "keyboard", "reload");
         } else if (args.length == 2 && "verbose".equals(args[0])) {
             return getListOfStringsMatchingLastWord(args, "true", "false");
         } else {

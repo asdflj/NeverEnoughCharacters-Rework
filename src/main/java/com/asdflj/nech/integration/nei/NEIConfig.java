@@ -20,6 +20,7 @@ public class NEIConfig implements IConfigureNEI {
         API.addOption(new BaseToggleButton(ButtonConstants.COMMA));
         API.addOption(new BaseToggleButton(ButtonConstants.PARENTHESES));
         API.addOption(new BaseToggleButton(ButtonConstants.VOLTAGE));
+        API.addOption(new BaseToggleButton(ButtonConstants.LUA_SCRIPT));
     }
 
     public static boolean getConfigValue(String identifier) {

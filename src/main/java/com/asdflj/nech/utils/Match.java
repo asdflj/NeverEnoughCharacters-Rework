@@ -1,11 +1,10 @@
 package com.asdflj.nech.utils;
 
-import static com.asdflj.nech.integration.nei.NEIConfig.getConfigValue;
-
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -18,9 +17,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.asdflj.nech.NechConfig;
-import com.asdflj.nech.integration.nei.ButtonConstants;
-import com.asdflj.nech.integration.nei.Voltage;
 import com.asdflj.nech.proxy.ClientProxy;
+import com.google.common.collect.ImmutableSet;
 
 import me.towdium.pinin.DictLoader;
 import me.towdium.pinin.PinIn;
@@ -34,34 +32,12 @@ public class Match {
         .commit();
     private static final Pattern p = Pattern.compile("a");
     private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
-    public static final List<Function<String, String>> textMiddleware = new LinkedList<>();
-    public static final List<Function<String, List<String>>> inputMiddleware = new LinkedList<>();
-    private static final String voltagePatternString = Voltage.getPatternString();
-    private static ImmutablePair<String, List<String>> inputCache = null;
+    public static final List<ITextFunction<String, String>> textMiddleware = new LinkedList<>();
+    public static final List<IInputFunction<String, Set<String>>> inputMiddleware = new LinkedList<>();
+    private static ImmutablePair<String, Set<String>> inputCache = null;
+
     static {
-        textMiddleware.add(s -> {
-            if (getConfigValue(ButtonConstants.COMMA)) {
-                return s.replaceAll(",", "");
-            }
-            return s;
-        });
-        textMiddleware.add(s -> {
-            if (getConfigValue(ButtonConstants.PARENTHESES)) {
-                return s.replaceAll("[()]", "");
-            }
-            return s;
-        });
-        inputMiddleware.add(s -> {
-            if (getConfigValue(ButtonConstants.VOLTAGE) && s.matches("^" + voltagePatternString + "\\w+")) {
-                s = s.replaceAll(voltagePatternString, "$1 ");
-                List<String> result = Arrays.stream(s.split(" "))
-                    .collect(Collectors.toList());
-                if (result.size() > 1) {
-                    return result;
-                }
-            }
-            return Arrays.asList(s);
-        });
+        new PinInPlugin().run();
     }
 
     private static <T> TreeSearcher<T> searcher() {
@@ -87,9 +63,18 @@ public class Match {
         if (inputCache != null && inputCache.left.equals(cs.toString())) {
             return match(s, inputCache.right);
         } else {
-            List<String> list = new LinkedList<>();
-            for (Function<String, List<String>> m : inputMiddleware) {
-                list.addAll(m.apply(cs.toString()));
+            Set<String> list = new HashSet<>();
+            for (Function<String, Set<String>> m : inputMiddleware) {
+                Set<String> r = m.apply(cs.toString());
+                if (r != null && !r.isEmpty()) {
+                    list.addAll(r);
+                }
+            }
+            list = list.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+            if (list.isEmpty()) {
+                list = ImmutableSet.of(cs.toString());
             }
             inputCache = ImmutablePair.of(cs.toString(), list);
             return match(s, list);
@@ -106,12 +91,16 @@ public class Match {
         return b;
     }
 
-    private static boolean match(String name, List<String> str) {
+    private static boolean match(String name, Set<String> str) {
         if (str.isEmpty()) {
             return pinInContains(name, "");
         }
         if (str.size() == 1) {
-            return pinInContains(name, str.get(0));
+            return pinInContains(
+                name,
+                str.stream()
+                    .findFirst()
+                    .get());
         }
         Optional<Boolean> result = str.stream()
             .map(s -> pinInContains(name, s))
