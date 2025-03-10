@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.asdflj.nech.NechCommand;
 import com.asdflj.nech.NechConfig;
+import com.asdflj.nech.utils.PinInPlugin;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -26,6 +27,7 @@ public class ClientProxy extends CommonProxy {
         NechConfig
             .loadConfig(new File(new File((File) FMLInjectionData.data()[6], "config"), "NeverEnoughCharacters.cfg"));
         ClientCommandHandler.instance.registerCommand(new NechCommand());
+        new PinInPlugin().run();
     }
 
     public static void sendToPlayer(String message, Object... args) {

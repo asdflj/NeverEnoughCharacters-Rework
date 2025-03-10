@@ -1,5 +1,7 @@
 package com.asdflj.nech.utils;
 
+import static codechicken.nei.NEIClientConfig.getOptionList;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,14 +16,17 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
+import com.asdflj.nech.integration.nei.LuaToggleButton;
 import com.asdflj.nech.proxy.ClientProxy;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 
 public class LuaPlugin {
 
     static Globals globals = JsePlatform.standardGlobals();
     public static List<LuaObject> list = new ArrayList<>();
+    public static List<LuaToggleButton> btns = new ArrayList<>();
 
     public static List<LuaObject> readLuaFiles(String directoryPath) {
         List<LuaObject> result = new ArrayList<>();
@@ -53,6 +58,11 @@ public class LuaPlugin {
     }
 
     public static void loadLuaScript() {
+        for (LuaObject luaObject : list) {
+            if (luaObject.getBtn() != null) {
+                getOptionList().optionList.remove(luaObject.getBtn());
+            }
+        }
         list.clear();
         List<LuaObject> r = readLuaFiles(new File((File) FMLInjectionData.data()[6], "pinin").getPath());
         if (r != null) {
@@ -69,12 +79,30 @@ public class LuaPlugin {
 
         private final LuaValue text_handler;
         private final LuaValue input_handler;
+        private final LuaValue name;
+        private LuaToggleButton btn;
 
         public LuaObject(Path path) {
             globals.loadfile(path.toString())
                 .call();
             this.text_handler = globals.get("text_handler");
             this.input_handler = globals.get("input_handler");
+            this.name = globals.get("name");
+            String name = this.getName();
+            if (name == null || name.isEmpty()) {
+                return;
+            }
+            btn = new LuaToggleButton(name);
+            API.addOption(btn);
+        }
+
+        public LuaToggleButton getBtn() {
+            return btn;
+        }
+
+        public boolean getState() {
+            if (btn == null) return true;
+            return btn.state();
         }
 
         public String textHandler(String t) {
@@ -82,6 +110,14 @@ public class LuaPlugin {
                 return t;
             }
             return this.text_handler.call(LuaValue.valueOf(t))
+                .checkjstring();
+        }
+
+        public String getName() {
+            if (this.name instanceof LuaNil) {
+                return null;
+            }
+            return this.name.call()
                 .checkjstring();
         }
 

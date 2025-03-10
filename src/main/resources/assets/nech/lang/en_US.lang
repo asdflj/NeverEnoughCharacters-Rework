@@ -19,3 +19,5 @@ nei.options.nech.lua_script.false=否
 nech.message.lua_script.reload=重新加载lua脚本
 nech.message.lua_script.done=加载结束
 nech.message.lua_script.invalid_file=无效lua脚本%s
+
+nei.options.nech.lua_scripts=lua脚本列表

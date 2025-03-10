@@ -38,7 +38,9 @@ public class PinInPlugin implements Runnable {
             public String apply(String s) {
                 if (getConfigValue(ButtonConstants.LUA_SCRIPT)) {
                     for (LuaPlugin.LuaObject o : LuaPlugin.list) {
-                        s = o.textHandler(s);
+                        if (o.getState()) {
+                            s = o.textHandler(s);
+                        }
                     }
                 }
                 return s;
@@ -69,9 +71,11 @@ public class PinInPlugin implements Runnable {
                 if (getConfigValue(ButtonConstants.LUA_SCRIPT)) {
                     Set<String> set = new HashSet<>();
                     for (LuaPlugin.LuaObject o : LuaPlugin.list) {
-                        Set<String> r = o.inputHandler(s);
-                        if (r != null) {
-                            set.addAll(r);
+                        if (o.getState()) {
+                            Set<String> r = o.inputHandler(s);
+                            if (r != null) {
+                                set.addAll(r);
+                            }
                         }
                     }
                     return set;

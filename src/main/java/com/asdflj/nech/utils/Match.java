@@ -36,10 +36,6 @@ public class Match {
     public static final List<IInputFunction<String, Set<String>>> inputMiddleware = new LinkedList<>();
     private static ImmutablePair<String, Set<String>> inputCache = null;
 
-    static {
-        new PinInPlugin().run();
-    }
-
     private static <T> TreeSearcher<T> searcher() {
         TreeSearcher<T> ret = new TreeSearcher<>(Searcher.Logic.CONTAIN, context);
         searchers.add(ret);
