@@ -54,7 +54,7 @@ public class PinInPlugin implements Runnable {
 
         inputMiddleware.add(s -> {
             if (getConfigValue(ButtonConstants.VOLTAGE) && s.matches("^" + voltagePatternString + "\\w+")) {
-                s = s.replaceAll(voltagePatternString, "$1 ");
+                s = s.replaceFirst(voltagePatternString, "$1 ");
                 Set<String> result = Arrays.stream(s.split(" "))
                     .collect(Collectors.toSet());
                 if (result.size() > 1) {
