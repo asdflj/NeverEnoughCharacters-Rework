@@ -15,7 +15,7 @@ public class LuaToggleButton extends BaseToggleButton {
     }
 
     private LuaToggleButton(String name, boolean defaultValue) {
-        super(LUA_SCRIPTS + name, true);
+        super(LUA_SCRIPTS + "." + name, true);
         tag.getTag(name)
             .getBooleanValue(defaultValue);
         this.n = name;

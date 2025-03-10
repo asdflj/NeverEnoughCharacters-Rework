@@ -19,7 +19,9 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import com.asdflj.nech.integration.nei.LuaToggleButton;
 import com.asdflj.nech.proxy.ClientProxy;
 
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.API;
+import codechicken.nei.config.OptionList;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 
 public class LuaPlugin {
@@ -60,7 +62,10 @@ public class LuaPlugin {
     public static void loadLuaScript() {
         for (LuaObject luaObject : list) {
             if (luaObject.getBtn() != null) {
-                getOptionList().optionList.remove(luaObject.getBtn());
+                OptionList optionList = getOptionList("lua_scripts", NEIClientConfig.getOptionList());
+                if (optionList != null) {
+                    optionList.optionList.remove(luaObject.getBtn());
+                }
             }
         }
         list.clear();
@@ -68,6 +73,25 @@ public class LuaPlugin {
         if (r != null) {
             list.addAll(r);
         }
+    }
+
+    public static OptionList getOptionList(String name, OptionList optionList) {
+        if (optionList == null) {
+            return null;
+        }
+        for (var o : optionList.optionList) {
+            if (o instanceof OptionList l) {
+                if (l.name.equals(name)) {
+                    return l;
+                } else {
+                    OptionList result = getOptionList(name, l);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public static void reloadLuaScript() {
