@@ -114,7 +114,8 @@ public class NechConfig {
         defaultTransformerRegExp = new String[] { "appeng.client.me.ItemRepo:updateView",
             "net.p455w0rd.wirelesscraftingterminal.client.me.ItemRepo:updateView",
             "com.glodblock.github.client.me.FluidRepo:updateView",
-            "com.glodblock.github.client.me.EssentiaRepo:updateView" };
+            "com.glodblock.github.client.me.EssentiaRepo:updateView",
+            "com.glodblock.github.client.me.FluidRepo:addEntriesToView" };
         defaultTransformerStringList = new String[] { "extracells.gui.GuiFluidTerminal:updateFluids",
             "extracells.gui.GuiFluidStorage:updateFluids",
             "witchinggadgets.client.ThaumonomiconIndexSearcher:buildEntryList",
