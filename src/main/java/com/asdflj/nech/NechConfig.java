@@ -122,6 +122,7 @@ public class NechConfig {
             "net.glease.tc4tweak.modules.researchBrowser.ThaumonomiconIndexSearcher:buildEntryList",
             "appeng.client.gui.implementations.GuiInterfaceTerminal:refreshList",
             "appeng.client.gui.implementations.GuiInterfaceTerminal:itemStackMatchesSearchTerm",
+            "appeng.client.gui.implementations.GuiInterfaceTerminal:interfaceSectionMatchesSearchTerm",
             "vswe.stevesfactory.components.ComponentMenuLiquid:updateSearch",
             "vswe.stevesfactory.components.ComponentMenuItem:updateSearch",
             "betterquesting.api2.client.gui.panels.lists.CanvasQuestSearch:queryMatches",
