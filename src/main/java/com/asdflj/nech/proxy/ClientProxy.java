@@ -1,5 +1,8 @@
 package com.asdflj.nech.proxy;
 
+import static com.asdflj.nech.NechConfig.KeyboardType;
+import static com.asdflj.nech.NechConfig.setKeyboard;
+
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
@@ -14,6 +17,7 @@ import com.asdflj.nech.NechCommand;
 import com.asdflj.nech.NechConfig;
 import com.asdflj.nech.utils.PinInPlugin;
 
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 
@@ -35,5 +39,11 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(I18n.format(message, args)));
         } catch (Exception ignored) {}
 
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+        setKeyboard(KeyboardType);
     }
 }
