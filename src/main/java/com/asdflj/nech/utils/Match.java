@@ -1,6 +1,14 @@
 package com.asdflj.nech.utils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.PrimitiveIterator;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -23,10 +31,10 @@ public class Match {
     public static final PinIn context = (new PinIn(new Loader())).config()
         .accelerate(true)
         .commit();
-    private static final Pattern p = Pattern.compile("a");
-    private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
     public static final List<ITextFunction<String, String>> textMiddleware = new LinkedList<>();
     public static final List<IInputFunction<String, Set<String>>> inputMiddleware = new LinkedList<>();
+    private static final Pattern p = Pattern.compile("a");
+    private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
     private static ImmutablePair<String, Set<String>> inputCache = null;
 
     private static <T> TreeSearcher<T> searcher() {
