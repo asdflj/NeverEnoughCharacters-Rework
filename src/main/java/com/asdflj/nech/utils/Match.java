@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.PrimitiveIterator;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.BiConsumer;
@@ -198,18 +197,6 @@ public class Match {
             feed.accept('\ue907', new String[] { "lun2" });
             feed.accept('\ue910', new String[] { "fu1" });
             feed.accept('\ue912', new String[] { "li4" });
-        }
-
-        @Override
-        public void loadCodePoints(CodePointConsumer feed) {
-            int i = 0;
-            String[] PinIns = new String[] { "lu2", "du4", "xi3", "bo1", "hei1", "da2", "lun2", "fu1", "li4" };
-            String s = "𬬻𬭊𬭳𬭛𬭶𫟼𬬭𫓧𫟷";
-            PrimitiveIterator.OfInt iterator = s.codePoints()
-                .iterator();
-            while (iterator.hasNext()) {
-                feed.accept(iterator.nextInt(), new String[] { PinIns[i++] });
-            }
         }
     }
 }
