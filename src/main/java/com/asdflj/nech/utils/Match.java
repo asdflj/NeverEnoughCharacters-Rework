@@ -30,10 +30,10 @@ public class Match {
     public static final PinIn context = (new PinIn(new Loader())).config()
         .accelerate(true)
         .commit();
-    private static final Pattern p = Pattern.compile("a");
-    private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
     public static final List<ITextFunction<String, String>> textMiddleware = new LinkedList<>();
     public static final List<IInputFunction<String, Set<String>>> inputMiddleware = new LinkedList<>();
+    private static final Pattern p = Pattern.compile("a");
+    private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
     private static ImmutablePair<String, Set<String>> inputCache = null;
 
     private static <T> TreeSearcher<T> searcher() {

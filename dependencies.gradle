@@ -35,7 +35,7 @@
  */
 dependencies {
     api('com.github.GTNewHorizons:NotEnoughItems:2.7.81-GTNH:dev')
-    shadowImplementation(files('libs/PinIn-1.6.0-all.jar'))
+    shadowImplementation("dev.ghostflyby:PinIn:1.7.2")
     shadowImplementation 'org.luaj:luaj-jse:3.0.1'
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-684-GTNH:dev')
     api('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.113-gtnh:dev') {
