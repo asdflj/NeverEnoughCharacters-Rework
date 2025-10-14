@@ -115,7 +115,10 @@ public class NechConfig {
             "net.p455w0rd.wirelesscraftingterminal.client.me.ItemRepo:updateView",
             "com.glodblock.github.client.me.FluidRepo:updateView",
             "com.glodblock.github.client.me.EssentiaRepo:updateView",
-            "com.glodblock.github.client.me.FluidRepo:addEntriesToView" };
+            "com.glodblock.github.client.me.FluidRepo:addEntriesToView",
+            "com.sinthoras.visualprospecting.integration.model.layers.UndergroundFluidLayerManager:computeSearch",
+            "com.sinthoras.visualprospecting.database.veintypes.VeinTypeCaching:lambda$recalculateSearch$0"
+        };
         defaultTransformerStringList = new String[] { "extracells.gui.GuiFluidTerminal:updateFluids",
             "extracells.gui.GuiFluidStorage:updateFluids",
             "witchinggadgets.client.ThaumonomiconIndexSearcher:buildEntryList",
@@ -139,7 +142,9 @@ public class NechConfig {
             "betterquesting.api2.client.gui.panels.lists.CanvasQuestSearch:queryMatches",
             "me.towdium.jecalculation.utils.Utilities$I18n:contains",
             "logisticspipes.gui.orderer.GuiOrderer:isSearched", "logisticspipes.gui.orderer.GuiRequestTable:isSearched",
-            "mrtjp.projectred.transportation.GuiRequester$$anonfun$stringMatch$1$1:apply", };
+            "mrtjp.projectred.transportation.GuiRequester$$anonfun$stringMatch$1$1:apply",
+            "gregtech.crossmod.navigator.PowerfailLayerManager:onSearch"
+        };
     }
 
     public static enum Spell {
