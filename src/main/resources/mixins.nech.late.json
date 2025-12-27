@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0",
+  "package": "com.asdflj.nech.core.mixins",
+  "refmap": "mixins.nech.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "server": [
+
+  ]
+}
