@@ -142,7 +142,8 @@ public class NechConfig {
             "me.towdium.jecalculation.utils.Utilities$I18n:contains",
             "logisticspipes.gui.orderer.GuiOrderer:isSearched", "logisticspipes.gui.orderer.GuiRequestTable:isSearched",
             "mrtjp.projectred.transportation.GuiRequester$$anonfun$stringMatch$1$1:apply",
-            "gregtech.crossmod.navigator.PowerfailLayerManager:onSearch" };
+            "gregtech.crossmod.navigator.PowerfailLayerManager:onSearch",
+            "binnie.core.machines.storage.WindowCompartment$9:updateSearch" };
     }
 
     public static enum Spell {
