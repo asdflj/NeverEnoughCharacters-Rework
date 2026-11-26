@@ -3,6 +3,7 @@ package com.asdflj.nech.core.transform;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.asdflj.nech.core.transform.transformers.TransformerLateContains;
 import com.asdflj.nech.core.transform.transformers.TransformerRegExp;
 import com.asdflj.nech.core.transform.transformers.TransformerString;
 
@@ -10,6 +11,7 @@ public class TransformerRegistry {
 
     public static ArrayList<Transformer.Configurable> configurables = new ArrayList();
     public static ArrayList<Transformer> transformers = new ArrayList();
+    public static ArrayList<Transformer> lateTransformers = new ArrayList();
 
     public TransformerRegistry() {}
 
@@ -27,9 +29,24 @@ public class TransformerRegistry {
         return ret;
     }
 
+    public static ArrayList<Transformer> getLateTransformer(String name) {
+        ArrayList<Transformer> ret = new ArrayList();
+        Iterator var2 = lateTransformers.iterator();
+
+        while (var2.hasNext()) {
+            Transformer t = (Transformer) var2.next();
+            if (t.accepts(name)) {
+                ret.add(t);
+            }
+        }
+
+        return ret;
+    }
+
     static {
         configurables.add(new TransformerString());
         configurables.add(new TransformerRegExp());
         transformers.addAll(configurables);
+        lateTransformers.add(new TransformerLateContains());
     }
 }

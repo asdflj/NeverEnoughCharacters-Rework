@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +25,7 @@ import me.towdium.pinin.DictLoader;
 import me.towdium.pinin.PinIn;
 import me.towdium.pinin.searchers.Searcher;
 import me.towdium.pinin.searchers.TreeSearcher;
+import me.towdium.pinin.utils.IndexSet;
 
 public class Match {
 
@@ -35,6 +37,9 @@ public class Match {
     private static final Pattern p = Pattern.compile("a");
     private static final Set<TreeSearcher<?>> searchers = Collections.newSetFromMap(new WeakHashMap<>());
     private static ImmutablePair<String, Set<String>> inputCache = null;
+    private static final ThreadLocal<ImmutablePair<Integer, Integer>> LAST_HIGHLIGHT = ThreadLocal
+        .withInitial(() -> ImmutablePair.of(-1, -1));
+    private static final ThreadLocal<String> LAST_HIGHLIGHT_QUERY = new ThreadLocal<>();
 
     private static <T> TreeSearcher<T> searcher() {
         TreeSearcher<T> ret = new TreeSearcher<>(Searcher.Logic.CONTAIN, context);
@@ -175,6 +180,67 @@ public class Match {
             .keyboard(NechConfig.KeyboardType.get())
             .commit();
         searchers.forEach(TreeSearcher::refresh);
+    }
+
+    public static int highlightStart(String text, String query) {
+        ImmutablePair<Integer, Integer> range = highlightRange(text, query);
+        LAST_HIGHLIGHT_QUERY.set(query);
+        if (range == null) {
+            LAST_HIGHLIGHT.set(ImmutablePair.of(-1, -1));
+            return -1;
+        }
+        LAST_HIGHLIGHT.set(range);
+        return range.left;
+    }
+
+    public static int highlightLength(String searchString) {
+        String query = LAST_HIGHLIGHT_QUERY.get();
+        ImmutablePair<Integer, Integer> range = LAST_HIGHLIGHT.get();
+        if (range.left < 0 || query == null || searchString == null || !searchString.equalsIgnoreCase(query)) {
+            return searchString == null ? 0 : searchString.length();
+        }
+        return range.right - range.left;
+    }
+
+    public static ImmutablePair<Integer, Integer> highlightRange(String text, String query) {
+        if (text == null || text.isEmpty() || query == null || query.isEmpty()) return null;
+        String lowerText = text.toLowerCase(Locale.ROOT);
+        String lowerQuery = query.toLowerCase(Locale.ROOT);
+        int inline = lowerText.indexOf(lowerQuery);
+        if (inline >= 0) return ImmutablePair.of(inline, inline + lowerQuery.length());
+
+        int[] out = new int[2];
+        for (int i = 0; i < text.length();) {
+            if (matchAt(text, i, lowerQuery, 0, -1, out)) return ImmutablePair.of(out[0], out[1]);
+            i += Character.charCount(text.codePointAt(i));
+        }
+        return null;
+    }
+
+    private static boolean matchAt(String text, int index, String query, int consumed, int first, int[] out) {
+        if (consumed == query.length()) {
+            out[0] = first;
+            out[1] = index;
+            return true;
+        }
+        if (index >= text.length()) return false;
+
+        int cp = text.codePointAt(index);
+        int next = index + Character.charCount(cp);
+        IndexSet set = context.getChar(cp)
+            .match(query, consumed, true);
+
+        if (next >= text.length()) {
+            if (set.get(query.length() - consumed)) {
+                out[0] = consumed == 0 ? index : first;
+                out[1] = next;
+                return true;
+            }
+            return false;
+        }
+        final int current = index;
+        return set
+            .traverse(c -> matchAt(text, next, query, consumed + c, consumed == 0 && c > 0 ? current : first, out));
     }
 
     static class Loader extends DictLoader.Default {

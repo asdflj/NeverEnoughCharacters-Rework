@@ -22,9 +22,11 @@ public class NechConfig {
     public static Spell KeyboardType;
     public static String[] transformerRegExpAdditionalList;
     public static String[] transformerStringAdditionalList;
+    public static String[] transformerLateContainsAdditionalList;
     public static String[] transformerMethodBlackList;
     public static String[] defaultTransformerRegExp;
     public static String[] defaultTransformerStringList;
+    public static String[] defaultTransformerLateContainsList;
 
     public NechConfig() {}
 
@@ -41,12 +43,23 @@ public class NechConfig {
             "DefaultTransformerString",
             defaultTransformerStringList,
             "Default list of methods to transform, of which uses \"String.contains\" to match.\nThis list is maintained by the mod and will have no effect if you change it.");
+        config.get(
+            "transformers",
+            "DefaultTransformerLateContains",
+            defaultTransformerLateContainsList,
+            """
+                Default list of methods transformed by LateClassTransformer, which is registered after Mixin and therefore sees mixin-injected methods.
+                Unlike the lists above, method names here support wildcard '*': "name*" for prefix, "*name" for suffix and "*name*" for contains, because mixin-renamed methods have a random prefix.
+                This list is maintained by the mod and will have no effect if you change it.""");
         config.getCategory("transformers")
             .get("DefaultTransformerRegExp")
             .set(defaultTransformerRegExp);
         config.getCategory("transformers")
             .get("DefaultTransformerString")
             .set(defaultTransformerStringList);
+        config.getCategory("transformers")
+            .get("DefaultTransformerLateContains")
+            .set(defaultTransformerLateContainsList);
         transformerRegExpAdditionalList = config.get(
             "transformers",
             "AdditionalTransformerRegExpList",
@@ -58,6 +71,12 @@ public class NechConfig {
             "AdditionalTransformerStringList",
             new String[0],
             "Additional list of methods to transform, of which uses \"String.contains\" to match.\nThe format is \"full.class.path$InnerClass:methodName\"")
+            .getStringList();
+        transformerLateContainsAdditionalList = config.get(
+            "transformers",
+            "AdditionalTransformerLateContainsList",
+            new String[0],
+            "Additional list of methods for LateClassTransformer (registered after Mixin), of which uses \"String.contains\" to match.\nThe format is \"full.class.path$InnerClass:methodName\"; method name supports wildcard '*': \"name*\" for prefix, \"*name\" for suffix and \"*name*\" for contains.")
             .getStringList();
         transformerMethodBlackList = config
             .get(
@@ -110,6 +129,7 @@ public class NechConfig {
         KeyboardType = NechConfig.Spell.QUANPIN;
         transformerRegExpAdditionalList = new String[0];
         transformerStringAdditionalList = new String[0];
+        transformerLateContainsAdditionalList = new String[0];
         transformerMethodBlackList = new String[0];
         defaultTransformerRegExp = new String[] { "appeng.client.me.ItemRepo:updateView",
             "net.p455w0rd.wirelesscraftingterminal.client.me.ItemRepo:updateView",
@@ -143,7 +163,11 @@ public class NechConfig {
             "logisticspipes.gui.orderer.GuiOrderer:isSearched", "logisticspipes.gui.orderer.GuiRequestTable:isSearched",
             "mrtjp.projectred.transportation.GuiRequester$$anonfun$stringMatch$1$1:apply",
             "gregtech.crossmod.navigator.PowerfailLayerManager:onSearch",
-            "binnie.core.machines.storage.WindowCompartment$9:updateSearch" };
+            "binnie.core.machines.storage.WindowCompartment$9:updateSearch",
+            "net.minecraft.client.gui.inventory.GuiContainerCreative:updateFilteredItems", "bfl:updateFilteredItems" };
+        defaultTransformerLateContainsList = new String[] {
+            "net.minecraft.client.gui.inventory.GuiContainerCreative:*$archaicfix$lambda*",
+            "com.blamejared.controlling.client.gui.SearchType:lambda$getPredicate$*" };
     }
 
     public static enum Spell {
