@@ -38,7 +38,7 @@ public class NechCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     public void injectData(Map<String, Object> data) {}
 
     public String getAccessTransformerClass() {
-        return "";
+        return null;
     }
 
     public Void call() {
